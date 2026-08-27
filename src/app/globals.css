@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Segoe UI", "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+  --color-brand-50: #ecfdf6;
+  --color-brand-100: #d1f9e8;
+  --color-brand-200: #a6f0d5;
+  --color-brand-300: #6ee2bd;
+  --color-brand-400: #34cca1;
+  --color-brand-500: #10b188;
+  --color-brand-600: #058e71;
+  --color-brand-700: #04725c;
+  --color-brand-800: #075a4a;
+  --color-brand-900: #073f36;
+
+  --color-ink-50: #f6f8fb;
+  --color-ink-100: #edf1f6;
+  --color-ink-200: #d9e1eb;
+  --color-ink-300: #b6c3d3;
+  --color-ink-400: #8b9cb2;
+  --color-ink-500: #66788f;
+  --color-ink-600: #4d5d73;
+  --color-ink-700: #3a4759;
+  --color-ink-800: #232c3a;
+  --color-ink-900: #151c27;
+  --color-ink-950: #0b1017;
+}
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-300) transparent;
+}
+.dark * {
+  scrollbar-color: var(--color-ink-700) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--color-ink-300);
+}
+.dark *::-webkit-scrollbar-thumb {
+  background: var(--color-ink-700);
+}
+
+/* Card / surface helpers keep markup short & consistent */
+@utility card {
+  border-radius: 1rem;
+  border: 1px solid var(--color-ink-200);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 8px 24px -16px rgb(16 24 40 / 0.18);
+}
+.dark .card {
+  border-color: color-mix(in oklab, var(--color-ink-700) 80%, transparent);
+  background: var(--color-ink-900);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 18px 40px -24px rgb(0 0 0 / 0.6);
+}
+
+@utility input-base {
+  width: 100%;
+  border-radius: 0.65rem;
+  border: 1px solid var(--color-ink-200);
+  background: #fff;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.9rem;
+  color: var(--color-ink-900);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.input-base:focus {
+  border-color: var(--color-brand-500);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-brand-500) 22%, transparent);
+}
+.dark .input-base {
+  border-color: var(--color-ink-700);
+  background: var(--color-ink-950);
+  color: var(--color-ink-50);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-rise {
+  animation: rise 0.35s ease both;
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.animate-pop {
+  animation: pop 0.18s ease-out both;
+}
+
+.recharts-tooltip-wrapper {
+  z-index: 40;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 22;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

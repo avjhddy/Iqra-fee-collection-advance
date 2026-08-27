@@ -86,8 +86,10 @@ function teachersFiltered(rows:any[],sp:URLSearchParams){let out=activeRows(rows
 
 async function buildOverview(sp:URLSearchParams){const p=resolvePeriod(sp), settings=await ensureSettings(), students=studentsFiltered(await all("students"),sp), teachers=teachersFiltered(await all("teachers"),sp), fees=await all("feePayments"),sals=await all("salaryPayments"),exps=(await all("expenses")).filter((e:any)=>!e.voided);
  const fs=students.map(s=>feeRow(s,p.ym,fees,p.to)), ss=teachers.map(t=>salaryRow(t,p.ym,sals,p.to));
- const inPeriod=(rows:any,dateField:string)=>rows.filter(r=>!r.voided&&r[dateField]>=p.from&&r[dateField]<=p.to);
- const prev=(rows:any,dateField:string)=>rows.filter(r=>!r.voided&&r[dateField]>=p.prevFrom&&r[dateField]<=p.prevTo);
+ const inPeriod = (rows: any[], dateField: string) =>
+   rows.filter((r: any) => !r.voided && r[dateField] >= p.from && r[dateField] <= p.to);
+ const prev = (rows: any[], dateField: string) =>
+  rows.filter((r: any) => !r.voided && r[dateField] >= p.prevFrom && r[dateField] <= p.prevTo);
  const fP=inPeriod(fees,"paymentDate"),fPrev=prev(fees,"paymentDate"),sP=inPeriod(sals,"paymentDate"),sPrev=prev(sals,"paymentDate"),eP=exps.filter(e=>e.expenseDate>=p.from&&e.expenseDate<=p.to),ePrev=exps.filter(e=>e.expenseDate>=p.prevFrom&&e.expenseDate<=p.prevTo);
  const sum=(a:any[])=>a.reduce((x,r)=>x+num(r.amount),0), collected=sum(fP), salaries=sum(sP), expenses=sum(eP), opening=num(settings.meta.openingBalance), balance=opening+sum(fees.filter(r=>!r.voided&&r.paymentDate<=p.to))-sum(sals.filter(r=>!r.voided&&r.paymentDate<=p.to))-sum(exps.filter(r=>r.expenseDate<=p.to));
  const prevVals={collected:sum(fPrev),salaries:sum(sPrev),expenses:sum(ePrev),balance:opening+sum(fees.filter(r=>!r.voided&&r.paymentDate<=p.prevTo))-sum(sals.filter(r=>!r.voided&&r.paymentDate<=p.prevTo))-sum(exps.filter(r=>r.expenseDate<=p.prevTo))};
